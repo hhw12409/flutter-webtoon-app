@@ -7,6 +7,20 @@ class HomeScreen extends StatelessWidget {
 
   final Future<List<WebtoonModel>> webtoons = ApiService.getTodayToons();
 
+  ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        var webtoon = snapshot.data![index];
+        return Text(webtoon.title);
+      },
+      scrollDirection: Axis.horizontal,
+      itemCount: snapshot.data!.length,
+      separatorBuilder: (context, index) {
+        return const SizedBox(width: 20);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,17 +40,7 @@ class HomeScreen extends StatelessWidget {
         future: webtoons,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.separated(
-              itemBuilder: (context, index) {
-                var webtoon = snapshot.data![index];
-                return Text(webtoon.title);
-              },
-              scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data!.length,
-              separatorBuilder: (context, index) {
-                return const SizedBox(width: 20);
-              },
-            );
+            return makeList(snapshot);
           }
           return const Center(
             child: CircularProgressIndicator(
