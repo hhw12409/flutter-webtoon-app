@@ -36,6 +36,7 @@ class DetailScreen extends StatelessWidget {
             children: [
               WebtoonCard(
                 thumb: thumb,
+                id: id,
               )
             ],
           ),
