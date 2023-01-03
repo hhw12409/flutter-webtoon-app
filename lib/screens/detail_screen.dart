@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:webtoon_app/models/webtoon_detail_model.dart';
+import 'package:webtoon_app/models/webtoon_episode_model.dart';
+import 'package:webtoon_app/services/api_service.dart';
 import 'package:webtoon_app/widget/webtoon_card.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
 
   const DetailScreen({
@@ -12,6 +15,21 @@ class DetailScreen extends StatelessWidget {
   });
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late Future<WebtoonDetailModel> webtoon;
+  late Future<List<WebtoonEpisodeModel>> episodes;
+
+  @override
+  void initState() {
+    super.initState();
+    webtoon = ApiService.getDetailToonById(widget.id);
+    episodes = ApiService.getToonEpisodeById(widget.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -20,7 +38,7 @@ class DetailScreen extends StatelessWidget {
         foregroundColor: Colors.green,
         backgroundColor: Colors.white,
         title: Text(
-          title,
+          widget.title,
           style: const TextStyle(
             fontSize: 24,
           ),
@@ -35,10 +53,22 @@ class DetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               WebtoonCard(
-                thumb: thumb,
-                id: id,
-              )
+                thumb: widget.thumb,
+                id: widget.id,
+              ),
             ],
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          FutureBuilder(
+            future: webtoon,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data!.about);
+              }
+              return const Text('...');
+            },
           ),
         ],
       ),
