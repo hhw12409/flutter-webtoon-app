@@ -44,6 +44,14 @@ class _DetailScreenState extends State<DetailScreen> {
             fontSize: 24,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.favorite_outline_outlined,
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
