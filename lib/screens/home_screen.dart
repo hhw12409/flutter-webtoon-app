@@ -32,40 +32,43 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 2,
-        foregroundColor: Colors.green,
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
         backgroundColor: Colors.white,
-        title: const Text(
-          '오늘의 웹툰',
-          style: TextStyle(
-            fontSize: 24,
+        appBar: AppBar(
+          elevation: 2,
+          foregroundColor: Colors.green,
+          backgroundColor: Colors.white,
+          title: const Text(
+            '오늘의 웹툰',
+            style: TextStyle(
+              fontSize: 24,
+            ),
           ),
         ),
-      ),
-      body: FutureBuilder(
-        future: webtoons,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                const SizedBox(
-                  height: 50,
-                ),
-                Expanded(
-                  child: makeList(snapshot),
-                ),
-              ],
+        body: FutureBuilder(
+          future: webtoons,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Expanded(
+                    child: makeList(snapshot),
+                  ),
+                ],
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
+              ),
             );
-          }
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.black,
-            ),
-          );
-        },
+          },
+        ),
       ),
     );
   }
